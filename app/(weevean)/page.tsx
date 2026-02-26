@@ -163,8 +163,17 @@ function Home() {
 
   if (!activeId) {
     return (
-      <div className="flex h-full items-center justify-center text-muted-foreground">
-        Select a channel or conversation to start chatting
+      <div className="flex h-full flex-col">
+        <div className="sticky top-0 z-10">
+          <AppHeaderPartial>
+            <div className="flex w-full items-center px-4">
+              <span className="font-semibold text-foreground">Welcome</span>
+            </div>
+          </AppHeaderPartial>
+        </div>
+        <div className="flex-1 flex items-center justify-center text-muted-foreground p-4 text-center">
+          Select a channel or conversation to start chatting
+        </div>
       </div>
     );
   }
