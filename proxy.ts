@@ -10,7 +10,10 @@ export async function proxy(request: NextRequest) {
   const isPublic = publicRoutes.includes(pathname);
 
   if (!sessionCookie && !isPublic) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+    const url = new URL("/auth/login", request.url);
+    // Add the callbackUrl to the redirect URL
+    url.searchParams.set("callbackUrl", pathname + request.nextUrl.search);
+    return NextResponse.redirect(url);
   }
   return NextResponse.next();
 }

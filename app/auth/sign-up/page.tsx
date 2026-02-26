@@ -1,9 +1,9 @@
 "use client";
-import { GitHubIcon, GoogleIcon, WeeveanIcon } from "@/components/shared/icons";
-import { Button } from "@/components/ui/button";
+import { WeeveanIcon } from "@/components/shared/icons";
 import Link from "next/link";
 
-import { authClient } from "@/lib/auth-client";
+import { OAuthLoginButtons } from "@/components/auth/oauth-login-buttons";
+import { Suspense } from "react";
 const FEATURES = [
   {
     title: "Self-hosted & open source",
@@ -20,20 +20,6 @@ const FEATURES = [
 ];
 
 export default function SignupPage() {
-  const handleGoogleSignUp = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
-  };
-
-  const handleGitHubSignUp = async () => {
-    await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/",
-    });
-  };
-
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col justify-center px-6 py-12 lg:px-12">
@@ -52,26 +38,9 @@ export default function SignupPage() {
             </p>
           </div>
 
-          <div className="space-y-3">
-            <Button
-              onClick={handleGitHubSignUp}
-              variant="outline"
-              className="w-full gap-3 h-11"
-              type="button"
-            >
-              <GitHubIcon className="h-5 w-5" />
-              <span>Continue with GitHub</span>
-            </Button>
-            <Button
-              onClick={handleGoogleSignUp}
-              variant="outline"
-              className="w-full gap-3 h-11"
-              type="button"
-            >
-              <GoogleIcon className="h-5 w-5" />
-              <span>Continue with Google</span>
-            </Button>
-          </div>
+          <Suspense fallback={null}>
+            <OAuthLoginButtons />
+          </Suspense>
 
           <p className="mt-6 text-xs text-center text-muted-foreground">
             By creating an account, you agree to our{" "}

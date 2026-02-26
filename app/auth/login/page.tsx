@@ -1,26 +1,10 @@
 "use client";
-import { GitHubIcon, GoogleIcon, WeeveanIcon } from "@/components/shared/icons";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { OAuthLoginButtons } from "@/components/auth/oauth-login-buttons";
+import { WeeveanIcon } from "@/components/shared/icons";
 import Link from "next/link";
-
-import { authClient } from "@/lib/auth-client";
+import { Suspense } from "react";
 
 export default function LoginPage() {
-  const handleGoogleSignIn = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
-  };
-
-  const handleGitHubSignIn = async () => {
-    await authClient.signIn.social({
-      provider: "github",
-      callbackURL: "/",
-    });
-  };
-
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="relative hidden lg:block bg-muted">
@@ -68,37 +52,15 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="space-y-3">
-            <Button
-              onClick={handleGitHubSignIn}
-              variant="outline"
-              className="w-full gap-3 h-11"
-              type="button"
-            >
-              <GitHubIcon className="h-5 w-5" />
-              <span>Continue with GitHub</span>
-            </Button>
-            <Button
-              onClick={handleGoogleSignIn}
-              variant="outline"
-              className="w-full gap-3 h-11"
-              type="button"
-            >
-              <GoogleIcon className="h-5 w-5" />
-              <span>Continue with Google</span>
-            </Button>
-          </div>
-
+          <Suspense fallback={null}>
+            <OAuthLoginButtons />
+          </Suspense>
           <div className="text-center mt-5">
             <p className="text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="font-medium text-primary hover:text-primary/80 transition-colors inline-flex items-center group"
-              >
-                Sign up
-                <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              <span className="text-primary">
+                one would be created for you automatically.
+              </span>
             </p>
           </div>
 
