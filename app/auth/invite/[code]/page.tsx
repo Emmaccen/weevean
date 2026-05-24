@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
+import { ClientError } from "@/lib/client-error";
 import { fetcher } from "@/lib/utils";
 import { Loader2, RocketIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -44,8 +45,11 @@ export default function InvitePage() {
           toast.info(`You are already a member of ${data.workspaceName}`);
           router.replace(`/?workspace=${data.workspaceId}`);
         }
-      } catch (err: any) {
-        setError(err.message || "Failed to load invite. It may have expired.");
+      } catch (err) {
+        const clientError = new ClientError(err);
+        setError(
+          clientError.message || "Failed to load invite. It may have expired.",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -67,8 +71,11 @@ export default function InvitePage() {
 
       toast.success("Successfully joined workspace!");
       router.push(`/?workspace=${resp.workspaceId}`);
-    } catch (err: any) {
-      setError(err.message || "An error occurred joining the workspace.");
+    } catch (err) {
+      const clientError = new ClientError(err);
+      setError(
+        clientError.message || "An error occurred joining the workspace.",
+      );
     } finally {
       setIsAccepting(false);
     }

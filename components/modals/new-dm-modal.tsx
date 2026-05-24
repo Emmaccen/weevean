@@ -55,7 +55,7 @@ function NewDMModal({
     }
   };
 
-  const filteredMembers = members?.filter((member: any) => {
+  const filteredMembers = members?.filter((member) => {
     if (member.user.id === session?.user?.id) return false; // Hide self
     return member.user.name?.toLowerCase().includes(searchQuery.toLowerCase());
   });
@@ -121,7 +121,7 @@ function NewDMModal({
                 No members found
               </div>
             ) : (
-              filteredMembers?.map((member: any) => (
+              filteredMembers?.map((member) => (
                 <button
                   key={member.user.id}
                   onClick={() => handleStartDM(member.user.id)}

@@ -58,7 +58,7 @@ export const POST = authorizedApiHandler(async (req, ctx, session) => {
   }
 
   const isMember = invite.channel.members?.some(
-    (member: any) => member.userId === session.user.id,
+    (member) => member.userId === session.user.id,
   );
 
   if (!isMember) {

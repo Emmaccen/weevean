@@ -22,7 +22,7 @@ export const POST = authorizedApiHandler(async (req, ctx, session) => {
 
   if (channel.type === "private") {
     const isChannelMember = channel.members?.some(
-      (member: any) => member.userId === session.user.id,
+      (member) => member.userId === session.user.id,
     );
     if (!isChannelMember) {
       return AppError.forbidden(
