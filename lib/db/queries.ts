@@ -1,4 +1,4 @@
-import { and, desc, eq, or } from "drizzle-orm";
+import { and, asc, desc, eq, isNull, or } from "drizzle-orm";
 import { db } from "./index";
 import {
   channelMembers,
@@ -74,15 +74,39 @@ export async function addWorkspaceMember(data: {
 }
 
 export async function getWorkspaceMembers(workspaceId: string) {
-  return await db.query.workspaceMembers.findMany({
+  const members = await db.query.workspaceMembers.findMany({
     where: eq(workspaceMembers.workspaceId, workspaceId),
     with: {
       user: true,
     },
   });
+
+  const workspace = await db.query.workspaces.findFirst({
+    where: eq(workspaces.id, workspaceId),
+    with: { owner: true },
+  });
+
+  const hasOwner = members.some((m) => m.userId === workspace?.ownerId);
+  if (workspace && workspace.owner && !hasOwner) {
+    members.push({
+      id: "owner-member",
+      workspaceId: workspace.id,
+      userId: workspace.ownerId,
+      role: "admin",
+      joinedAt: workspace.createdAt,
+      user: workspace.owner,
+    } as any);
+  }
+
+  return members;
 }
 
 export async function isWorkspaceMember(workspaceId: string, userId: string) {
+  const workspace = await db.query.workspaces.findFirst({
+    where: eq(workspaces.id, workspaceId),
+  });
+  if (workspace?.ownerId === userId) return true;
+
   const member = await db.query.workspaceMembers.findFirst({
     where: and(
       eq(workspaceMembers.workspaceId, workspaceId),
@@ -135,7 +159,11 @@ export async function getChannelById(channelId: string) {
     with: {
       workspace: true,
       creator: true,
-      members: true,
+      members: {
+        with: {
+          user: true,
+        },
+      },
     },
   });
 }
@@ -162,7 +190,7 @@ export async function createChannel(data: {
 
 export async function getMessagesByChannel(channelId: string, limit = 50) {
   return await db.query.messages.findMany({
-    where: eq(messages.channelId, channelId),
+    where: and(eq(messages.channelId, channelId), isNull(messages.parentId)),
     with: {
       user: true,
       reactions: {
@@ -173,6 +201,37 @@ export async function getMessagesByChannel(channelId: string, limit = 50) {
     },
     orderBy: [desc(messages.createdAt)],
     limit,
+  });
+}
+
+export async function getThreadMessages(parentId: string, limit = 50) {
+  return await db.query.messages.findMany({
+    where: eq(messages.parentId, parentId),
+    with: {
+      user: true,
+      reactions: {
+        with: {
+          user: true,
+        },
+      },
+    },
+    orderBy: [asc(messages.createdAt)],
+    limit,
+  });
+}
+
+export async function getMessageById(messageId: string) {
+  return await db.query.messages.findFirst({
+    where: eq(messages.id, messageId),
+    with: {
+      channel: true,
+      user: true,
+      reactions: {
+        with: {
+          user: true,
+        },
+      },
+    },
   });
 }
 
