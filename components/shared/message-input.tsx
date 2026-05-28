@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/animate-ui/components/radix/popover";
 import { Button } from "@/components/ui/button";
+import { QUICK_EMOJIS } from "@/lib/constants";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
@@ -40,21 +41,6 @@ interface MessageInputProps {
   value?: string;
   onChange?: (value: string) => void;
 }
-
-const QUICK_EMOJIS = [
-  "👍",
-  "❤️",
-  "😂",
-  "🎉",
-  "🚀",
-  "👀",
-  "🔥",
-  "💯",
-  "👏",
-  "🤔",
-  "😊",
-  "✨",
-];
 
 const FORMATTING_TOOLS = [
   { icon: Bold, label: "Bold", shortcut: "Ctrl+B", wrapper: ["**", "**"] },
@@ -218,10 +204,10 @@ export function MessageInput({
           <AnimatePresence>
             {(isFocused || content.length > 0) && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.15 }}
+                initial={{ opacity: 0, height: 0, y: -10 }}
+                animate={{ opacity: 1, height: "auto", y: 0 }}
+                exit={{ opacity: 0, height: 0, y: -10 }}
+                transition={{ duration: 0.25, type: "spring", bounce: 0.2 }}
                 className="flex items-center gap-0.5 border-b border-border px-2 py-1.5"
               >
                 {FORMATTING_TOOLS.map((tool) => (

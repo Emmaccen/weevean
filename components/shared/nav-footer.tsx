@@ -18,14 +18,7 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { signOut, useSession } from "@/lib/auth-client";
 import { getUserInitials } from "@/lib/utils";
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ThemeToggleSubMenu } from "./ThemeToggle";
 
@@ -94,25 +87,6 @@ export const NavFooter = () => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Sparkles />
-                  Upgrade to Pro
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <BadgeCheck />
-                  Account
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard />
-                  Billing
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Bell />
-                  Notifications
-                </DropdownMenuItem>
                 <ThemeToggleSubMenu />
               </DropdownMenuGroup>
               <DropdownMenuSeparator />

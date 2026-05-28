@@ -6,9 +6,10 @@ import {
   PopoverTrigger,
 } from "@/components/animate-ui/components/radix/popover";
 import { Button } from "@/components/ui/button";
+import { QUICK_EMOJIS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
 import { Plus, SmilePlus } from "lucide-react";
+import { motion } from "motion/react";
 
 interface Reaction {
   emoji: string;
@@ -20,14 +21,16 @@ interface MessageReactionsProps {
   reactions: Reaction[];
   onReact: (emoji: string) => void;
   showQuickPicker?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-const QUICK_EMOJIS = ["👍", "❤️", "😂", "🎉", "🚀", "👀", "🔥", "💯"];
+
 
 export function MessageReactions({
   reactions,
   onReact,
   showQuickPicker,
+  onOpenChange,
 }: MessageReactionsProps) {
   if (showQuickPicker) {
     return (
@@ -43,7 +46,7 @@ export function MessageReactions({
             {emoji}
           </motion.button>
         ))}
-        <Popover>
+        <Popover onOpenChange={onOpenChange}>
           <PopoverTrigger asChild>
             <Button
               variant="ghost"
@@ -96,7 +99,7 @@ export function MessageReactions({
         </motion.button>
       ))}
 
-      <Popover>
+      <Popover onOpenChange={onOpenChange}>
         <PopoverTrigger asChild>
           <motion.button
             whileHover={{ scale: 1.05 }}

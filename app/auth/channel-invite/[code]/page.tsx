@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
+import { ClientError } from "@/lib/client-error";
 import { fetcher } from "@/lib/utils";
 import { Hash, Loader2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -39,8 +40,11 @@ export default function ChannelInvitePage() {
           `/api/private-channel-invites/${code}`,
         );
         setInvite(data);
-      } catch (err: any) {
-        setError(err.message || "Failed to load invite. It may have expired.");
+      } catch (err) {
+        const clientError = new ClientError(err);
+        setError(
+          clientError.message || "Failed to load invite. It may have expired.",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -67,8 +71,9 @@ export default function ChannelInvitePage() {
       }
 
       router.push(`/?workspace=${resp.workspaceId}&channel=${resp.channelId}`);
-    } catch (err: any) {
-      setError(err.message || "An error occurred joining the channel.");
+    } catch (err) {
+      const clientError = new ClientError(err);
+      setError(clientError.message || "An error occurred joining the channel.");
     } finally {
       setIsAccepting(false);
     }

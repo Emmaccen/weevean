@@ -68,9 +68,8 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       prompt: "select_account",
       mapProfileToUser: (profile) => {
-        console.log("google: ", profile);
         return {
-          name: `${profile.given_name} ${profile.family_name}`,
+          name: `${profile.given_name || ""} ${profile.family_name || ""}`.trim() || "User",
         };
       },
     },
@@ -78,11 +77,8 @@ export const auth = betterAuth({
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
       mapProfileToUser: (profile) => {
-        console.log("github: ", profile);
         return {
-          name:
-            `${profile.name.split(" ")[0]} ${profile.name.split(" ")[1]}` ||
-            profile.login,
+          name: profile.name || profile.login || "User",
         };
       },
     },

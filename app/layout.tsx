@@ -6,18 +6,24 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   display: "swap",
 });
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Weevean",
-  description: "",
+  title: "Weevean | Team collaboration, reimagined",
+  description:
+    "Open-source team chat with AI-powered assistance. Built for developers, designed for everyone.",
+  openGraph: {
+    title: "Weevean",
+    description: "Open-source team chat with AI-powered assistance.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

@@ -122,9 +122,7 @@ export class ClientError {
   // handle all defaults with a toast message
   handleAllCommonErrorsWithToast(message?: string) {
     toast.error(
-      this.message ??
-        message ??
-        "Opps! Something went wrong. Let's try that again.",
+      this.message ?? "Oops! Something went wrong. Let's try that again.",
     );
   }
 }

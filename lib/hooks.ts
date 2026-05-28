@@ -1,7 +1,13 @@
 import { Message } from "@/components/shared/message-list";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
-import { ChannelWithCreator, WorkspaceWithOwner } from "./types";
+import {
+  ChannelWithCreator,
+  DMWithParticipants,
+  WorkspaceInviteWithCreator,
+  WorkspaceMemberWithUser,
+  WorkspaceWithOwner,
+} from "./types";
 
 export function useWorkspaces() {
   const { data, error, isLoading, mutate } = useSWR<WorkspaceWithOwner[]>(
@@ -51,7 +57,7 @@ export function useMessages(channelId?: string) {
 }
 
 export function useDMs() {
-  const { data, error, isLoading, mutate } = useSWR<any[]>(
+  const { data, error, isLoading, mutate } = useSWR<DMWithParticipants[]>(
     "/api/dms",
     fetcher,
     {
@@ -85,10 +91,9 @@ export function useDMMessages(dmId?: string) {
 }
 
 export function useWorkspaceInvites(workspaceId?: string) {
-  const { data, error, isLoading, mutate } = useSWR<any[]>(
-    workspaceId ? `/api/workspaces/${workspaceId}/invites` : null,
-    fetcher,
-  );
+  const { data, error, isLoading, mutate } = useSWR<
+    WorkspaceInviteWithCreator[]
+  >(workspaceId ? `/api/workspaces/${workspaceId}/invites` : null, fetcher);
 
   return {
     invites: data,
@@ -99,7 +104,7 @@ export function useWorkspaceInvites(workspaceId?: string) {
 }
 
 export function useWorkspaceMembers(workspaceId?: string) {
-  const { data, error, isLoading, mutate } = useSWR<any[]>(
+  const { data, error, isLoading, mutate } = useSWR<WorkspaceMemberWithUser[]>(
     workspaceId ? `/api/workspaces/${workspaceId}/members` : null,
     fetcher,
   );
