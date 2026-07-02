@@ -47,6 +47,26 @@ pnpm run dev
 
 Visit `http://localhost:3000`
 
+## Deployment
+
+### **Deploy to Diploi**
+
+[![launch with diploi button](https://diploi.com/launch-big.svg)](https://diploi.com/launch/Emmaccen/weevean)
+
+1. **Launch the project**
+
+   Click the launch button above to create a new Diploi deployment.
+
+2. **Add environment variables**
+
+   In Diploi, open your deployment page and go to **Options > Next.js > Environment**. Add any required environment variables.
+
+3. **Preview the deployment**
+
+   Open the provided preview URL from your Diploi deployment page.
+
+For more information, please visit [diploi.com](https://diploi.com/)
+
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md) - System design and technical decisions
